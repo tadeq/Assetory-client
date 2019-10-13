@@ -9,11 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SoftwareService {
-    private static final String OS_NAME_PROPERTY = "os.name";
-    private static final String OS_VERSION_PROPERTY = "os.version";
-    private static final String OS_ARCHITECTURE_PROPERTY = "os.arch";
-
-    public void getSoftwareData() throws IOException {
+    public List<SoftwareRecord> getSoftwareData() throws IOException {
         Process powershellProcess = Runtime.getRuntime().exec("powershell Get-ItemProperty HKLM:\\Software\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\* | Select-Object DisplayName, DisplayVersion, Publisher, InstallDate | Format-list");
         BufferedReader reader = new BufferedReader(new InputStreamReader(powershellProcess.getInputStream()));
         List<SoftwareRecord> records = new ArrayList<>();
@@ -40,10 +36,6 @@ public class SoftwareService {
         reader.close();
         powershellProcess.getOutputStream().close();
 
-        records.forEach(r -> System.out.println(r.getPublisher() + " " + r.getName() + " " + r.getVersion() + " " + r.getInstallDate()));
-
-        System.out.println("Name of the OS: " + System.getProperty(OS_NAME_PROPERTY));
-        System.out.println("Version of the OS: " + System.getProperty(OS_VERSION_PROPERTY));
-        System.out.println("Architecture of THe OS: " + System.getProperty(OS_ARCHITECTURE_PROPERTY));
+        return records;
     }
 }
