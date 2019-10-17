@@ -25,6 +25,7 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
+    compile group: 'com.google.code.gson', name: 'gson', version: getProperty('gson_version')
     compileOnly group: 'org.projectlombok', name:'lombok', version: getProperty('lombok_version')
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: getProperty('lombok_version')
 }

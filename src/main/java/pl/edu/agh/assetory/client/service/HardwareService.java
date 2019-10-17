@@ -1,22 +1,24 @@
 package pl.edu.agh.assetory.client.service;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class HardwareService {
+    private static final String OUT_FILENAME = "dxdiag.txt";
+
     public static List<String> USED_RECORDS = Arrays.asList("Time of this report", "Machine name", "Machine Id",
             "System Manufacturer", "System Model", "Processor", "Memory", "Card name", "Manufacturer", "Chip type", "DAC type",
             "Display Memory");
 
     public Map<String, String> getHardwareData() throws IOException, InterruptedException {
-        ProcessBuilder dxdiagProcessBuilder = new ProcessBuilder("cmd.exe", "/c", "dxdiag", "/t", "dxdiag.txt");
+        ProcessBuilder dxdiagProcessBuilder = new ProcessBuilder("cmd.exe", "/c", "dxdiag", "/t", OUT_FILENAME);
         Process dxdiag = dxdiagProcessBuilder.start();
         dxdiag.waitFor();
 
-        BufferedReader reader = new BufferedReader(new FileReader("dxdiag.txt"));
+        BufferedReader reader = new BufferedReader(new FileReader(OUT_FILENAME));
         Map<String, String> results = new HashMap<>();
         String line;
         while ((line = reader.readLine()) != null) {
@@ -27,6 +29,8 @@ public class HardwareService {
         }
         reader.close();
         dxdiag.getOutputStream().close();
+        File file = new File(OUT_FILENAME);
+        file.delete();
         return results;
     }
 }
