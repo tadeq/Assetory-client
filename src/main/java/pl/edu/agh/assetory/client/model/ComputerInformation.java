@@ -14,11 +14,11 @@ public class ComputerInformation {
     private String dateTime;
     private Map<String, String> system;
     private Map<String, String> hardware;
-    private List<SoftwareRecord> software;
+    private Map<String, List<SoftwareRecord>> software;
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    public ComputerInformation(String computerId, Map<String, String> systemInfo, Map<String, String> hardwareInfo, List<SoftwareRecord> softwareInfo) {
+    public ComputerInformation(String computerId, Map<String, String> systemInfo, Map<String, String> hardwareInfo, Map<String, List<SoftwareRecord>> softwareInfo) {
         LocalDateTime now = LocalDateTime.now();
         this.id = computerId + now.getYear() + now.getMonth() + now.getDayOfMonth() + now.getHour() + now.getMinute();
         this.computerId = computerId;
