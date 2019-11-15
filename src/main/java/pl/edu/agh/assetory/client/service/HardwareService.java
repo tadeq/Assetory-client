@@ -9,9 +9,8 @@ import java.util.*;
 public class HardwareService {
     private static final String OUT_FILENAME = "dxdiag.txt";
 
-    public static List<String> USED_RECORDS = Arrays.asList("Time of this report", "Machine name", "Machine Id",
-            "System Manufacturer", "System Model", "Processor", "Memory", "Card name", "Manufacturer", "Chip type", "DAC type",
-            "Display Memory");
+    public static List<String> USED_RECORDS = Arrays.asList("Machine name", "Machine Id", "System Manufacturer",
+            "System Model", "Processor", "Memory", "Card name", "Manufacturer", "Chip type", "DAC type", "Display Memory");
 
     public Map<String, String> getHardwareData() throws IOException, InterruptedException {
         ProcessBuilder dxdiagProcessBuilder = new ProcessBuilder("cmd.exe", "/c", "dxdiag", "/t", OUT_FILENAME);

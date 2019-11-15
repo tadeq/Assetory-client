@@ -11,7 +11,8 @@ import java.util.Map;
 public class ComputerInformation {
     private String id;
     private String computerId;
-    private String dateTime;
+    private String date;
+    private String time;
     private Map<String, String> system;
     private Map<String, String> hardware;
     private Map<String, List<SoftwareRecord>> software;
@@ -22,7 +23,9 @@ public class ComputerInformation {
         LocalDateTime now = LocalDateTime.now();
         this.id = computerId + now.getYear() + now.getMonth() + now.getDayOfMonth() + now.getHour() + now.getMinute();
         this.computerId = computerId;
-        this.dateTime = now.format(dateTimeFormatter);
+        String[] dateTime = now.format(dateTimeFormatter).split(" ");
+        this.date = dateTime[0];
+        this.time = dateTime[1];
         this.system = systemInfo;
         this.hardware = hardwareInfo;
         this.software = softwareInfo;
