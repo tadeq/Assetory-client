@@ -50,6 +50,7 @@ public class DataSendingScheduler {
 
     private ComputerInformation fetchData() {
         ComputerInformation computerInformation = null;
+        System.out.println("Start retrieving data");
         try {
             computerInformation = new ComputerInformation(computerId,
                     systemService.getSystemData(),

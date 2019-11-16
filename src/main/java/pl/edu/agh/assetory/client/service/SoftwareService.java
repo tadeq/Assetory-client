@@ -36,7 +36,10 @@ public class SoftwareService {
                 }
                 if (!publisher.equals("")) {
                     if (publishersSoftware.containsKey(publisher)) {
-                        publishersSoftware.get(publisher).add(record);
+                        List<SoftwareRecord> softwareRecords = publishersSoftware.get(publisher);
+                        if (!softwareRecords.contains(record)) {
+                            softwareRecords.add(record);
+                        }
                     } else {
                         List<SoftwareRecord> softwareRecords = new ArrayList<>();
                         softwareRecords.add(record);
