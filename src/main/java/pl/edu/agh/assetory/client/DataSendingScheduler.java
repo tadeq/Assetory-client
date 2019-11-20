@@ -7,6 +7,9 @@ import pl.edu.agh.assetory.client.service.SoftwareService;
 import pl.edu.agh.assetory.client.service.SystemService;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -21,31 +24,20 @@ public class DataSendingScheduler {
         this.computerId = computerId;
     }
 
-    public void scheduleDataSending() {
-        System.out.println("Starting loop");
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            String line = scanner.nextLine();
-            if (line.equals("a")){
-                ComputerInformation information = fetchData();
-                sendData(information);
+    public void scheduleDataSending(int hour, int minute, int second) {
+        TimerTask dataSendTask = new TimerTask() {
+            @Override
+            public void run() {
+                Optional<ComputerInformation> computerInformation = Optional.ofNullable(fetchData());
+                computerInformation.ifPresent(information -> sendData(information));
             }
-        }
-
-        //TODO proper implementation below, above for test purposes
-//        TimerTask dataSendTask = new TimerTask() {
-//            @Override
-//            public void run() {
-//                Optional<ComputerInformation> computerInformation = Optional.ofNullable(fetchData());
-//                computerInformation.ifPresent(information -> sendData(information));
-//            }
-//        };
-//        Timer timer = new Timer("Data sending timer");
-//        Calendar executionTime = Calendar.getInstance();
-//        executionTime.set(Calendar.HOUR_OF_DAY, 9);
-//        executionTime.set(Calendar.MINUTE, 31);
-//        executionTime.set(Calendar.SECOND, 0);
-//        timer.schedule(dataSendTask, executionTime.getTime(), TimeUnit.MILLISECONDS.convert(2, TimeUnit.MINUTES));
+        };
+        Timer timer = new Timer("Data sending timer");
+        Calendar executionTime = Calendar.getInstance();
+        executionTime.set(Calendar.HOUR_OF_DAY, hour);
+        executionTime.set(Calendar.MINUTE, minute);
+        executionTime.set(Calendar.SECOND, second);
+        timer.schedule(dataSendTask, executionTime.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
     }
 
     private ComputerInformation fetchData() {

@@ -32,7 +32,14 @@ public class SoftwareService {
                 }
                 splitLine = reader.readLine().split(":");
                 if (splitLine.length > 1) {
-                    record.setInstallDate(splitLine[1].trim());
+                    String date = splitLine[1].trim();
+                    if (date.length() >= 8) {
+                        StringBuilder dateBuilder = new StringBuilder(date);
+                        dateBuilder.insert(4, "-");
+                        dateBuilder.insert(7, "-");
+                        date = dateBuilder.toString();
+                    }
+                    record.setInstallDate(date);
                 }
                 if (!publisher.equals("")) {
                     if (publishersSoftware.containsKey(publisher)) {
