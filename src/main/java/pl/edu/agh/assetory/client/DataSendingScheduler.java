@@ -7,9 +7,6 @@ import pl.edu.agh.assetory.client.service.SoftwareService;
 import pl.edu.agh.assetory.client.service.SystemService;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -24,19 +21,19 @@ public class DataSendingScheduler {
         this.computerId = computerId;
     }
 
-    public void scheduleDataSending(int hour, int minute, int second) {
+    public void scheduleDataSending(int hour, int minute, String url) {
         TimerTask dataSendTask = new TimerTask() {
             @Override
             public void run() {
                 Optional<ComputerInformation> computerInformation = Optional.ofNullable(fetchData());
-                computerInformation.ifPresent(information -> sendData(information));
+                computerInformation.ifPresent(information -> sendData(url, information));
             }
         };
         Timer timer = new Timer("Data sending timer");
         Calendar executionTime = Calendar.getInstance();
         executionTime.set(Calendar.HOUR_OF_DAY, hour);
         executionTime.set(Calendar.MINUTE, minute);
-        executionTime.set(Calendar.SECOND, second);
+        executionTime.set(Calendar.SECOND, 0);
         timer.schedule(dataSendTask, executionTime.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
     }
 
@@ -54,11 +51,11 @@ public class DataSendingScheduler {
         return computerInformation;
     }
 
-    private void sendData(ComputerInformation computerInformation) {
+    private void sendData(String url, ComputerInformation computerInformation) {
         System.out.println("Start sending data");
         try {
             if (computerInformation != null) {
-                sender.sendData(computerInformation);
+                sender.sendData(url, computerInformation);
             }
         } catch (IOException e) {
             e.printStackTrace();

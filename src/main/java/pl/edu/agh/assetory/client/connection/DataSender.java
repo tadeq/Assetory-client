@@ -9,11 +9,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class DataSender {
-    private static final String URL_INFO = "http://localhost:5444/info";
     private static final Gson gson = new Gson();
 
-    public void sendData(ComputerInformation information) throws IOException {
-        URL url = new URL(URL_INFO);
+    public void sendData(String endpointUrl, ComputerInformation information) throws IOException {
+        URL url = new URL(endpointUrl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
         connection.setDoOutput(true);
